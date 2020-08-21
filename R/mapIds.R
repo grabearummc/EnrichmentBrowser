@@ -203,6 +203,9 @@ idMap <- function(obj, org=NA,
     orgpkg <- .getAnnoPkg(org)
     sgenes <- sgenes[!is.na(sgenes)]
     sgenes <- sgenes[sgenes != ""]
+    if (from == "ENSEMBL") {
+      sgenes <- gsub("\\..*", "", sgenes)
+    }
     suppressMessages(
         sgenes <- AnnotationDbi::mapIds(orgpkg, keys = sgenes, 
                                                 column = to, 
@@ -273,6 +276,9 @@ idTypes <- function(org)
     excl.na=TRUE, multi.to="first", resolve.multiFrom=TRUE)
 {
     anno.pkg <- .getAnnoPkg(anno) 
+    if (from == "ENSEMBL") {
+      ids <- gsub("\\..*", "", ids)
+    }
     suppressMessages(
         x <- AnnotationDbi::mapIds(anno.pkg, 
                 keys=ids, keytype=from, column=to, multiVals="list")
